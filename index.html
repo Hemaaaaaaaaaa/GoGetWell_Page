@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoGetWell - Your Health Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">GoGetWell</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul>
+    <button class="cta-button">Get Started</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Empower Your Health Journey</h1>
+    <p>Your personal health assistant, available anytime.</p>
+    <button class="hero-button">Start Free Trial</button>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <h2>Features</h2>
+    <div class="feature-cards">
+      <div class="card">
+        <h3>24/7 Health Support</h3>
+        <p>Get health advice and answers anytime, anywhere.</p>
+      </div>
+      <div class="card">
+        <h3>Personalized Plans</h3>
+        <p>Customized recommendations based on your needs.</p>
+      </div>
+      <div class="card">
+        <h3>Easy to Use</h3>
+        <p>Simple, intuitive interface designed for you.</p>
+      </div>
+      <div class="card">
+        <h3>Data Privacy</h3>
+        <p>Your health data is always secure and private.</p>
+      </div>
+      <div class="card">
+        <h3>Expert Advice</h3>
+        <p>Get expert health advice at your fingertips.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <h2>Pricing</h2>
+    <div class="pricing-cards">
+      <div class="card">
+        <h3>Basic</h3>
+        <p>$9/month</p>
+        <p>Essential features to get started.</p>
+        <button class="pricing-button">Select</button>
+      </div>
+      <div class="card">
+        <h3>Pro</h3>
+        <p>$19/month</p>
+        <p>Advanced features for power users.</p>
+        <button class="pricing-button">Select</button>
+      </div>
+      <div class="card">
+        <h3>Premium</h3>
+        <p>$29/month</p>
+        <p>All features unlocked with premium support.</p>
+        <button class="pricing-button">Select</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials">
+    <h2>What Our Users Say</h2>
+    <div class="testimonial-cards">
+      <div class="testimonial-card">
+        <p>"GoGetWell has been an invaluable part of my health journey!"</p>
+        <p>- Jane Doe</p>
+      </div>
+      <div class="testimonial-card">
+        <p>"I love how personalized the recommendations are. Highly recommend!"</p>
+        <p>- John Smith</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Stay Connected</h2>
+    <button class="contact-button">Contact Us</button>
+  </section>
+
+  <!-- Floating Action Button -->
+  <button class="fab">+</button>
+
+  <!-- Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Sign Up for Updates</h2>
+      <input type="email" id="email" placeholder="Enter your email" />
+      <button id="signupButton">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 GoGetWell. All rights reserved.</p>
+    <div class="social-media">
+      <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+      <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+      <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+    </div>
+  </footer>
+
+  <script>
+    // Modal Script
+    const modal = document.getElementById("signupModal");
+    const btn = document.querySelector(".cta-button");
+    const span = document.querySelector(".close");
+    const signupButton = document.getElementById("signupButton");
+    const emailInput = document.getElementById("email");
+
+    // Open modal when 'Get Started' button is clicked
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // Close modal when 'X' is clicked
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // Close modal if user clicks outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // Handle the Sign Up button click
+    signupButton.onclick = function() {
+      const email = emailInput.value.trim();
+
+      // Basic email validation
+      if (!email || !email.includes('@') || !email.split('@')[1]?.includes('.')) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      // AJAX POST request to send the email
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:5000/signup', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          alert(response.message); // Show success message
+          modal.style.display = "none"; // Close the modal
+        } else {
+          alert("Error: " + xhr.responseText); // Show error message
+        }
+      };
+
+      const data = JSON.stringify({ email: email });
+      xhr.send(data); // Send email to backend
+    };
+  </script>
+</body>
+</html>
